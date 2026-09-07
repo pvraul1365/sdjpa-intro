@@ -1,4 +1,4 @@
-package guru.springframework.sdjpa_intro;
+package guru.springframework.sdjpaintro;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

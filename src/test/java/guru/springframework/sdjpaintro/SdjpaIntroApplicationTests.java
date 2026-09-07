@@ -1,4 +1,4 @@
-package guru.springframework.sdjpa_intro;
+package guru.springframework.sdjpaintro;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
