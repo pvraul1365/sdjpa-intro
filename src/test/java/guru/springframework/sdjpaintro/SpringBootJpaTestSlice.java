@@ -2,9 +2,16 @@ package guru.springframework.sdjpaintro;
 
 import guru.springframework.sdjpaintro.domain.Book;
 import guru.springframework.sdjpaintro.repositories.BookRepository;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.annotation.Rollback;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
  * SpringBootJpaTestSlice
@@ -15,15 +22,20 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
  * @version 08/09/2026 - 18:27
  * @since 1.25
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
 public class SpringBootJpaTestSlice {
 
     @Autowired
     BookRepository bookRepository;
 
+    @Order(1)
+    //@Rollback(false)
+    @Commit // This annotation will commit the transaction after the test method is executed, so the changes will be persisted in the database.
     @Test
     void testJpaTestSplice() {
         var countBefore = bookRepository.count();
+        assertThat(countBefore).isEqualTo(0);
 
         bookRepository.save(new Book(
                 "Test Driven Development",
@@ -32,7 +44,15 @@ public class SpringBootJpaTestSlice {
         ));
 
         var countAfter = bookRepository.count();
-        
+
         assert(countAfter > countBefore);
+    }
+
+    @Order(2)
+    @Test
+    void testJpaTestSpliceTransaction() {
+        var countBefore = bookRepository.count();
+        assertThat(countBefore).isEqualTo(1);
+
     }
 }
