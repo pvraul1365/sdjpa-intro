@@ -5,6 +5,7 @@ import guru.springframework.sdjpaintro.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
  * @version 07/09/2026 - 19:46
  * @since 1.25
  */
+@Profile({"local", "default"})
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -27,6 +29,7 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("DataInitializer is running...");
 
+        /*
         // Add your data initialization logic here
         Book bookDDD = new Book(
                 "Domain Driven Design",
@@ -45,6 +48,7 @@ public class DataInitializer implements CommandLineRunner {
 
         Book savedSIA = this.bookRepository.save(bookSIA);
         log.info("ID DataInitializer savedSIA: {}", savedSIA.getId());
+         */
 
         this.bookRepository.findAll().forEach(book -> {
             log.info("Book: {} - {} - {}", book.getTitle(), book.getIsbn(), book.getPublisher());
