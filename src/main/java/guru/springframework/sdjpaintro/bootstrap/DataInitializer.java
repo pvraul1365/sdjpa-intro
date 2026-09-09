@@ -29,7 +29,8 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("DataInitializer is running...");
 
-        /*
+        bookRepository.deleteAll();
+
         // Add your data initialization logic here
         Book bookDDD = new Book(
                 "Domain Driven Design",
@@ -48,7 +49,6 @@ public class DataInitializer implements CommandLineRunner {
 
         Book savedSIA = this.bookRepository.save(bookSIA);
         log.info("ID DataInitializer savedSIA: {}", savedSIA.getId());
-         */
 
         this.bookRepository.findAll().forEach(book -> {
             log.info("Book: {} - {} - {}", book.getTitle(), book.getIsbn(), book.getPublisher());
