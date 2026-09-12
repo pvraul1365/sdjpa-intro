@@ -15,4 +15,9 @@
             <column name="next_val" type="BIGINT"/>
         </createTable>
     </changeSet>
+    <changeSet author="PVRAUL1" id="1789199352919-3">
+        <insert tableName="book_seq">
+            <column name="next_val" value="1"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>
