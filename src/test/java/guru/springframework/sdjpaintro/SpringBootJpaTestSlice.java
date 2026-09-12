@@ -43,7 +43,9 @@ public class SpringBootJpaTestSlice {
         bookRepository.save(new Book(
                 "Test Driven Development",
                 "978-0321146533",
-                "Addison-Wesley Professional"
+                "Addison-Wesley Professional",
+                null
+
         ));
 
         var countAfter = bookRepository.count();

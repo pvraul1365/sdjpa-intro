@@ -35,7 +35,8 @@ public class DataInitializer implements CommandLineRunner {
         Book bookDDD = new Book(
                 "Domain Driven Design",
                 "978-0321125217",
-                "Addison-Wesley Professional"
+                "Addison-Wesley Professional",
+                null
         );
 
         Book savedDDD = this.bookRepository.save(bookDDD);
@@ -44,7 +45,8 @@ public class DataInitializer implements CommandLineRunner {
         Book bookSIA = new Book(
                 "Spring in Action",
                 "978-1617294945",
-                "Manning Publications"
+                "Manning Publications",
+                null
         );
 
         Book savedSIA = this.bookRepository.save(bookSIA);
