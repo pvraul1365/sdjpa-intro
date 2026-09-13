@@ -1,6 +1,11 @@
 package guru.springframework.sdjpaintro;
 
+import guru.springframework.sdjpaintro.domain.AuthorUuid;
+import guru.springframework.sdjpaintro.domain.BookUuid;
+import guru.springframework.sdjpaintro.repositories.AuthorUuidRepository;
 import guru.springframework.sdjpaintro.repositories.BookRepository;
+import guru.springframework.sdjpaintro.repositories.BookUuidRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
@@ -21,12 +26,45 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  */
 @ActiveProfiles("local")
 @DataJpaTest
-@ComponentScan(basePackages = {"guru.springframework.sdjpaintro.bootstrap"})
+//@ComponentScan(basePackages = {"guru.springframework.sdjpaintro.bootstrap"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Slf4j
 public class MySQLIntegrationTest {
 
     @Autowired
     BookRepository bookRepository;
+
+    @Autowired
+    AuthorUuidRepository authorUuidRepository;
+
+    @Autowired
+    BookUuidRepository bookUuidRepository;
+
+    @Test
+    void testBookUuid() {
+        BookUuid bookUuid = new BookUuid();
+        BookUuid savedBookDDD = bookUuidRepository.save(bookUuid);
+        log.info("ID MySQLIntegrationTest savedBookDDD: {}", savedBookDDD.getId());
+
+        assertThat(savedBookDDD).isNotNull();
+        assertThat(savedBookDDD.getId()).isNotNull();
+
+        final BookUuid foundBook = bookUuidRepository.findById(savedBookDDD.getId()).orElse(null);
+        assertThat(foundBook).isNotNull();
+    }
+
+    @Test
+    void testAuthorUuid() {
+        AuthorUuid authorUuid = new AuthorUuid();
+        AuthorUuid savedAuthor = authorUuidRepository.save(authorUuid);
+        log.info("ID MySQLIntegrationTest savedAuthor: {}", savedAuthor.getId());
+
+        assertThat(savedAuthor).isNotNull();
+        assertThat(savedAuthor.getId()).isNotNull();
+
+        final AuthorUuid foundAuthor = authorUuidRepository.findById(savedAuthor.getId()).orElse(null);
+        assertThat(foundAuthor).isNotNull();
+    }
 
     @Test
     void testMySQL() {

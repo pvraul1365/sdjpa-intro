@@ -11,6 +11,7 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.Commit;
+import org.springframework.test.annotation.Rollback;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -33,23 +34,25 @@ public class SpringBootJpaTestSlice {
     BookRepository bookRepository;
 
     @Order(1)
-    //@Rollback(false)
-    @Commit // This annotation will commit the transaction after the test method is executed, so the changes will be persisted in the database.
-//    @Test
+//    @Rollback(false)
+//    @Commit // This annotation will commit the transaction after the test method is executed, so the changes will be persisted in the database.
+    @Test
     void testJpaTestSplice() {
         var countBefore = bookRepository.count();
         assertThat(countBefore).isEqualTo(0);
 
+        /*
         bookRepository.save(new Book(
                 "Test Driven Development",
                 "978-0321146533",
                 "Addison-Wesley Professional",
-                0L
+                null
         ));
 
         var countAfter = bookRepository.count();
 
         assert(countAfter > countBefore);
+         */
     }
 
     @Order(2)
