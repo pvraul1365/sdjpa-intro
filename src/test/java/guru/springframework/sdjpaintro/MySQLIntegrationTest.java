@@ -3,6 +3,9 @@ package guru.springframework.sdjpaintro;
 import guru.springframework.sdjpaintro.domain.AuthorUuid;
 import guru.springframework.sdjpaintro.domain.BookNatural;
 import guru.springframework.sdjpaintro.domain.BookUuid;
+import guru.springframework.sdjpaintro.domain.composite.AuthorComposite;
+import guru.springframework.sdjpaintro.domain.composite.NamedId;
+import guru.springframework.sdjpaintro.repositories.AuthorCompositeRepository;
 import guru.springframework.sdjpaintro.repositories.AuthorUuidRepository;
 import guru.springframework.sdjpaintro.repositories.BookNaturalRepository;
 import guru.springframework.sdjpaintro.repositories.BookRepository;
@@ -44,6 +47,24 @@ public class MySQLIntegrationTest {
 
     @Autowired
     BookNaturalRepository bookNaturalRepository;
+
+    @Autowired
+    AuthorCompositeRepository authorCompositeRepository;
+
+    @Test
+    void authorCompositeTest(){
+        NamedId namedId = new NamedId("John", "Doe");
+        var authorComposite = new AuthorComposite();
+        authorComposite.setFirstName(namedId.getFirstName());
+        authorComposite.setLastName(namedId.getLastName());
+        authorComposite.setCountry("USA");
+
+        var savedAuthorComposite = authorCompositeRepository.save(authorComposite);
+        assertThat(savedAuthorComposite).isNotNull();
+
+        var foundAuthorComposite = authorCompositeRepository.findById(namedId).orElse(null);
+        assertThat(foundAuthorComposite).isNotNull();
+    }
 
     @Test
     void bookNaturalTest() {
