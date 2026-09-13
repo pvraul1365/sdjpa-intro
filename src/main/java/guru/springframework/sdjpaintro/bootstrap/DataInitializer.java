@@ -1,6 +1,8 @@
 package guru.springframework.sdjpaintro.bootstrap;
 
+import guru.springframework.sdjpaintro.domain.AuthorUuid;
 import guru.springframework.sdjpaintro.domain.Book;
+import guru.springframework.sdjpaintro.repositories.AuthorUuidRepository;
 import guru.springframework.sdjpaintro.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Component;
 public class DataInitializer implements CommandLineRunner {
 
     private final BookRepository bookRepository;
+    private final AuthorUuidRepository authorUuidRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -55,5 +58,12 @@ public class DataInitializer implements CommandLineRunner {
         this.bookRepository.findAll().forEach(book -> {
             log.info("Book: {} - {} - {}", book.getTitle(), book.getIsbn(), book.getPublisher());
         });
+
+        AuthorUuid authorDDD = new AuthorUuid(
+                "Eric",
+                "Evans"
+        );
+        final AuthorUuid savedAuthorDDD = this.authorUuidRepository.save(authorDDD);
+        log.info("AuthorUuid DataInitializer authorDDD: {}", savedAuthorDDD.getId());
     }
 }
