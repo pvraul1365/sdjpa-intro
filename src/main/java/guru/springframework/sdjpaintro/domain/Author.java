@@ -26,8 +26,7 @@ import lombok.Setter;
 public class Author {
 
     @Id
-    @SequenceGenerator(name = "author_seq_gen", sequenceName = "author_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_seq_gen")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
     private String firstName;
