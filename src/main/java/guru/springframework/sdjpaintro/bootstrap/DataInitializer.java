@@ -2,8 +2,10 @@ package guru.springframework.sdjpaintro.bootstrap;
 
 import guru.springframework.sdjpaintro.domain.AuthorUuid;
 import guru.springframework.sdjpaintro.domain.Book;
+import guru.springframework.sdjpaintro.domain.BookUuid;
 import guru.springframework.sdjpaintro.repositories.AuthorUuidRepository;
 import guru.springframework.sdjpaintro.repositories.BookRepository;
+import guru.springframework.sdjpaintro.repositories.BookUuidRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -27,6 +29,7 @@ public class DataInitializer implements CommandLineRunner {
 
     private final BookRepository bookRepository;
     private final AuthorUuidRepository authorUuidRepository;
+    private final BookUuidRepository bookUuidRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -64,6 +67,17 @@ public class DataInitializer implements CommandLineRunner {
                 "Evans"
         );
         final AuthorUuid savedAuthorDDD = this.authorUuidRepository.save(authorDDD);
-        log.info("AuthorUuid DataInitializer authorDDD: {}", savedAuthorDDD.getId());
+        log.info("AuthorUuid: {} - {} - {}",
+                savedAuthorDDD.getId(), savedAuthorDDD.getFirstName(), savedAuthorDDD.getLastName());
+
+        BookUuid bookUuidDDD = new BookUuid(
+                "Domain Driven Design",
+                "978-0321125217",
+                "Addison-Wesley Professional"
+        );
+        final BookUuid savedBookUuidDDD = this.bookUuidRepository.save(bookUuidDDD);
+        log.info("BookUuid: {} - {} - {} - {}",
+                savedBookUuidDDD.getId(), savedBookUuidDDD.getTitle(), savedBookUuidDDD.getIsbn(), savedBookUuidDDD.getPublisher());
+
     }
 }
