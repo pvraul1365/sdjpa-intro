@@ -1,8 +1,10 @@
 package guru.springframework.sdjpaintro;
 
 import guru.springframework.sdjpaintro.domain.AuthorUuid;
+import guru.springframework.sdjpaintro.domain.BookNatural;
 import guru.springframework.sdjpaintro.domain.BookUuid;
 import guru.springframework.sdjpaintro.repositories.AuthorUuidRepository;
+import guru.springframework.sdjpaintro.repositories.BookNaturalRepository;
 import guru.springframework.sdjpaintro.repositories.BookRepository;
 import guru.springframework.sdjpaintro.repositories.BookUuidRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,24 @@ public class MySQLIntegrationTest {
 
     @Autowired
     BookUuidRepository bookUuidRepository;
+
+    @Autowired
+    BookNaturalRepository bookNaturalRepository;
+
+    @Test
+    void bookNaturalTest() {
+        BookNatural bookNatural = BookNatural.builder()
+                .title("Book Title")
+                .isbn("1234567890")
+                .publisher("Publisher")
+                .build();
+
+        BookNatural savedBookNatural = bookNaturalRepository.save(bookNatural);
+        log.info("ID MySQLIntegrationTest savedBookNatural: {}", savedBookNatural.getTitle());
+
+        assertThat(savedBookNatural).isNotNull();
+        assertThat(savedBookNatural.getTitle()).isNotNull();
+    }
 
     @Test
     void testBookUuid() {
