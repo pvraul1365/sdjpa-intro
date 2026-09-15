@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AuthorDaoImpl implements AuthorDao {
 
     private final DataSource dataSource;
@@ -43,11 +45,11 @@ public class AuthorDaoImpl implements AuthorDao {
                 return author;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error fetching author by id: {}", id, e);
         } finally {
-            try { if (resultSet != null) resultSet.close(); } catch (Exception e) { e.printStackTrace(); }
-            try { if (statement != null) statement.close(); } catch (Exception e) { e.printStackTrace(); }
-            try { if (connection != null) connection.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { if (resultSet != null) resultSet.close(); } catch (Exception e) { log.error("Error closing ResultSet", e); }
+            try { if (statement != null) statement.close(); } catch (Exception e) { log.error("Error closing Statement", e); }
+            try { if (connection != null) connection.close(); } catch (Exception e) { log.error("Error closing Connection", e); }
         }
 
         return null;
