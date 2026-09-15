@@ -38,4 +38,14 @@ public class AuthorDaoIntegrationTest {
         log.info("Author: " + author);
     }
 
+    @Test
+    void testGetAuthorByName() {
+        String firstName = "Robert"; // Replace with a valid first name from your database
+        String lastName = "Martin"; // Replace with a valid last name from your database
+        var author = authorDao.findAuthorByName(firstName, lastName);
+        assert author != null;
+
+        log.info("Author: " + author);
+    }
+
 }

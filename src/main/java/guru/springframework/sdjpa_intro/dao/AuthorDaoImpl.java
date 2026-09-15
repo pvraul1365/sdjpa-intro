@@ -60,4 +60,37 @@ public class AuthorDaoImpl implements AuthorDao {
         return null;
     }
 
+    @Override
+    public Author findAuthorByName(final String firstName, final String lastName) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM author WHERE first_name = ? AND last_name = ?");
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Author author = new Author();
+                author.setId(resultSet.getLong("id"));
+                author.setFirstName(resultSet.getString("first_name"));
+                author.setLastName(resultSet.getString("last_name"));
+
+                return author;
+            }
+
+        } catch (Exception e) {
+            log.error("Error fetching author by name: {} {}", firstName, lastName, e);
+        } finally {
+            try { if (resultSet != null) resultSet.close(); } catch (Exception e) { log.error("Error closing ResultSet", e); }
+            try { if (preparedStatement != null) preparedStatement.close(); } catch (Exception e) { log.error("Error closing PreparedStatement", e); }
+            try { if (connection != null) connection.close(); } catch (Exception e) { log.error("Error closing Connection", e); }
+        }
+
+        return null;
+    }
+
 }
