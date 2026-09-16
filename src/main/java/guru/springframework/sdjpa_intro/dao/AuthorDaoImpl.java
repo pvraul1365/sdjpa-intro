@@ -80,6 +80,38 @@ public class AuthorDaoImpl implements AuthorDao {
         return null;
     }
 
+    @Override
+    public Author saveNewAuthor(final Author author) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement("INSERT INTO author (first_name, last_name) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, author.getFirstName());
+            preparedStatement.setString(2, author.getLastName());
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating author failed, no rows affected.");
+            }
+
+            resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                author.setId(resultSet.getLong(1));
+                return author;
+            } else {
+                throw new SQLException("Creating author failed, no ID obtained.");
+            }
+        } catch (Exception e) {
+            log.error("Error saving new author: {}", author, e);
+        } finally {
+            closeAllResources(connection, preparedStatement, resultSet);
+        }
+        return null;
+    }
+
     private void closeAllResources(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
         try { if (resultSet != null) resultSet.close(); } catch (Exception e) { log.error("Error closing ResultSet", e); }
         try { if (preparedStatement != null) preparedStatement.close(); } catch (Exception e) { log.error("Error closing PreparedStatement", e); }

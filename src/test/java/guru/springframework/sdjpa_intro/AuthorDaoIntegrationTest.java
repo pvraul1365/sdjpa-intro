@@ -2,6 +2,7 @@ package guru.springframework.sdjpa_intro;
 
 import guru.springframework.sdjpa_intro.dao.AuthorDao;
 import guru.springframework.sdjpa_intro.dao.AuthorDaoImpl;
+import guru.springframework.sdjpa_intro.domain.Author;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,18 @@ public class AuthorDaoIntegrationTest {
         assert author != null;
 
         log.info("Author: " + author);
+    }
+
+    @Test
+    void testSaveAuthor() {
+        var newAuthor = new Author();
+        newAuthor.setFirstName("John");
+        newAuthor.setLastName("Doe");
+
+        var savedAuthor = authorDao.saveNewAuthor(newAuthor);
+        assert savedAuthor != null;
+
+        log.info("Saved Author: " + savedAuthor);
     }
 
 }
