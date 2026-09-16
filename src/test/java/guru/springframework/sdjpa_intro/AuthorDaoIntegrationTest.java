@@ -61,4 +61,23 @@ public class AuthorDaoIntegrationTest {
         log.info("Saved Author: " + savedAuthor);
     }
 
+    @Test
+    void testUpdateAuthor() {
+        var newAuthor = new Author();
+        newAuthor.setFirstName("Jane");
+        newAuthor.setLastName("Doe");
+
+        var  savedAuthor = authorDao.saveNewAuthor(newAuthor);
+
+        var updatedFirstName = "Janet";
+        savedAuthor.setFirstName(updatedFirstName);
+
+        var updatedAuthor = authorDao.updateAuthor(savedAuthor);
+        log.info("Updated Author: " + updatedAuthor);
+
+        assert updatedAuthor != null;
+        assert  updatedAuthor.getFirstName().equals(updatedFirstName);
+
+    }
+
 }
