@@ -77,7 +77,23 @@ public class AuthorDaoIntegrationTest {
 
         assert updatedAuthor != null;
         assert  updatedAuthor.getFirstName().equals(updatedFirstName);
+    }
 
+    @Test
+    void testDeleteAuthor() {
+        var newAuthor = new Author();
+        newAuthor.setFirstName("Alice");
+        newAuthor.setLastName("Smith");
+
+        var savedAuthor = authorDao.saveNewAuthor(newAuthor);
+        assert savedAuthor != null;
+
+        authorDao.deleteAuthor(savedAuthor.getId());
+
+        var deletedAuthor = authorDao.getById(savedAuthor.getId());
+        assert deletedAuthor == null;
+
+        log.info("Deleted Author with ID: " + savedAuthor.getId());
     }
 
 }
