@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.Objects;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -20,6 +21,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Book {
 
     @Id
@@ -47,5 +49,16 @@ public class Book {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", authorId=" + authorId +
+                '}';
     }
 }
