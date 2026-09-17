@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,12 +30,16 @@ public class Author {
     private String firstName;
     private String lastName;
 
+    @Transient
+    private List<Book> books;
+
     @Override
     public String toString() {
         return "Author{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", books=" + books +
                 '}';
     }
 }
