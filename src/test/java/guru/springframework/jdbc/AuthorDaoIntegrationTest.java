@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * AuthorDaoIntegrationTest
@@ -85,4 +88,18 @@ public class AuthorDaoIntegrationTest {
         log.info("Updated Author: " + updatedAuthor);
     }
 
+    @Test
+    void testDeleteAuthor() {
+        var newAuthor = new Author();
+        newAuthor.setFirstName("John");
+        newAuthor.setLastName("Doe");
+
+        var savedAuthor = authorDao.saveNewAuthor(newAuthor);
+
+        authorDao.deleteAuthorById(savedAuthor.getId());
+
+        assertThrows(EmptyResultDataAccessException.class, () -> {
+            authorDao.getById(savedAuthor.getId());
+        });
+    }
 }
