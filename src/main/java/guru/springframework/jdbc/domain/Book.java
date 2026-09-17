@@ -1,4 +1,4 @@
-package guru.springframework.sdjpa_intro.domain;
+package guru.springframework.jdbc.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

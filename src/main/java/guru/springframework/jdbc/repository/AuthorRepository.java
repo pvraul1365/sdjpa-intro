@@ -1,6 +1,6 @@
-package guru.springframework.sdjpa_intro.repository;
+package guru.springframework.jdbc.repository;
 
-import guru.springframework.sdjpa_intro.domain.Author;
+import guru.springframework.jdbc.domain.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
