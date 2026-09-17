@@ -48,4 +48,16 @@ public class AuthorDaoIntegrationTest {
         log.info("Author: " + author);
     }
 
+    @Test
+    void testSaveNewAuthor() {
+        var newAuthor = new guru.springframework.jdbc.domain.Author();
+        newAuthor.setFirstName("John");
+        newAuthor.setLastName("Doe");
+
+        var savedAuthor = authorDao.saveNewAuthor(newAuthor);
+        assert savedAuthor != null;
+
+        log.info("Saved Author: " + savedAuthor);
+    }
+
 }
