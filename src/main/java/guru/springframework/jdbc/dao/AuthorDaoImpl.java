@@ -1,6 +1,8 @@
 package guru.springframework.jdbc.dao;
 
 import guru.springframework.jdbc.domain.Author;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +16,16 @@ import org.springframework.stereotype.Component;
  * @since 1.25
  */
 @Component
+@RequiredArgsConstructor
 public class AuthorDaoImpl implements AuthorDao {
+
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public Author getById(Long id) {
-        return null;
+
+        return jdbcTemplate.queryForObject("select * from author where id = ?", new Object[] {id},
+                getRowMapper());
     }
 
     @Override
