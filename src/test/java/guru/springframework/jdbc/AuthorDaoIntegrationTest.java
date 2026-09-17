@@ -2,6 +2,7 @@ package guru.springframework.jdbc;
 
 import guru.springframework.jdbc.dao.AuthorDao;
 import guru.springframework.jdbc.dao.AuthorDaoImpl;
+import guru.springframework.jdbc.domain.Author;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class AuthorDaoIntegrationTest {
 
     @Test
     void testSaveNewAuthor() {
-        var newAuthor = new guru.springframework.jdbc.domain.Author();
+        var newAuthor = new Author();
         newAuthor.setFirstName("John");
         newAuthor.setLastName("Doe");
 
@@ -58,6 +59,30 @@ public class AuthorDaoIntegrationTest {
         assert savedAuthor != null;
 
         log.info("Saved Author: " + savedAuthor);
+    }
+
+    @Test
+    void testUpdateAuthor() {
+        var newAuthor = new Author();
+        newAuthor.setFirstName("John");
+        newAuthor.setLastName("Doe");
+
+        var savedAuthor = authorDao.saveNewAuthor(newAuthor);
+
+        var author = authorDao.getById(savedAuthor.getId());
+        assert author != null;
+
+        String updatedFirstName = "UpdatedFirstName";
+        String updatedLastName = "UpdatedLastName";
+        author.setFirstName(updatedFirstName);
+        author.setLastName(updatedLastName);
+
+        var updatedAuthor = authorDao.updateAuthor(author);
+        assert updatedAuthor != null;
+        assert updatedAuthor.getFirstName().equals(updatedFirstName);
+        assert updatedAuthor.getLastName().equals(updatedLastName);
+
+        log.info("Updated Author: " + updatedAuthor);
     }
 
 }
