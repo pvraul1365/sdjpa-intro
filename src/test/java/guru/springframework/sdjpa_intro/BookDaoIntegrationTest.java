@@ -1,5 +1,7 @@
 package guru.springframework.sdjpa_intro;
 
+import guru.springframework.sdjpa_intro.dao.AuthorDao;
+import guru.springframework.sdjpa_intro.dao.AuthorDaoImpl;
 import guru.springframework.sdjpa_intro.dao.BookDao;
 import guru.springframework.sdjpa_intro.dao.BookDaoImpl;
 import guru.springframework.sdjpa_intro.domain.Book;
@@ -22,13 +24,16 @@ import org.springframework.test.context.ActiveProfiles;
  */
 @ActiveProfiles("local")
 @DataJpaTest
-@Import({ BookDaoImpl.class })
+@Import({ BookDaoImpl.class, AuthorDaoImpl.class })
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Slf4j
 public class BookDaoIntegrationTest {
 
     @Autowired
     BookDao bookDao;
+
+    @Autowired
+    AuthorDao authorDao;
 
     @Test
     void testGetBook() {
@@ -54,7 +59,9 @@ public class BookDaoIntegrationTest {
         newBook.setTitle("New Book Title");
         newBook.setIsbn("1234567890");
         newBook.setPublisher("Test Publisher");
-        newBook.setAuthorId(1L);
+
+        var author = authorDao.getById(1L); // Assuming author with ID 1 exists
+        newBook.setAuthor(author);
 
         var savedBook = bookDao.saveNewBook(newBook);
         assert savedBook != null;
@@ -68,7 +75,9 @@ public class BookDaoIntegrationTest {
         newBook.setTitle("Another New Book Title");
         newBook.setIsbn("0987654321");
         newBook.setPublisher("Another Test Publisher");
-        newBook.setAuthorId(1L);
+
+        var author = authorDao.getById(1L); // Assuming author with ID 1 exists
+        newBook.setAuthor(author);
 
         var savedBook = bookDao.saveNewBook(newBook);
         assert savedBook != null;
@@ -88,7 +97,8 @@ public class BookDaoIntegrationTest {
         newBook.setTitle("Book to Delete");
         newBook.setIsbn("1122334455");
         newBook.setPublisher("Delete Test Publisher");
-        newBook.setAuthorId(1L);
+        var author = authorDao.getById(1L); // Assuming author with ID 1 exists
+        newBook.setAuthor(author);
 
         var savedBook = bookDao.saveNewBook(newBook);
         assert savedBook != null;

@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 public class BookDaoImpl implements BookDao {
 
     private final DataSource dataSource;
+    private final AuthorDao authorDao;
 
     @Override
     public Book getById(final Long id) {
@@ -88,7 +89,7 @@ public class BookDaoImpl implements BookDao {
             preparedStatement.setString(1, book.getTitle());
             preparedStatement.setString(2, book.getIsbn());
             preparedStatement.setString(3, book.getPublisher());
-            preparedStatement.setLong(4, book.getAuthorId());
+            preparedStatement.setLong(4, book.getAuthor().getId());
             int affectedRows = preparedStatement.executeUpdate();
 
             if (affectedRows == 0) {
@@ -125,7 +126,7 @@ public class BookDaoImpl implements BookDao {
             preparedStatement.setString(1, book.getTitle());
             preparedStatement.setString(2, book.getIsbn());
             preparedStatement.setString(3, book.getPublisher());
-            preparedStatement.setLong(4, book.getAuthorId());
+            preparedStatement.setLong(4, book.getAuthor().getId());
             preparedStatement.setLong(5, book.getId());
             int affectedRows = preparedStatement.executeUpdate();
 
@@ -177,7 +178,9 @@ public class BookDaoImpl implements BookDao {
         book.setTitle(resultSet.getString("title"));
         book.setIsbn(resultSet.getString("isbn"));
         book.setPublisher(resultSet.getString("publisher"));
-        book.setAuthorId(resultSet.getLong("author_id"));
+
+        Author author = authorDao.getById(resultSet.getLong("author_id"));
+        book.setAuthor(author);
 
         return book;
     }

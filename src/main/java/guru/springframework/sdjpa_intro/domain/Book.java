@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,9 @@ public class Book {
     private String title;
     private String isbn;
     private String publisher;
-    private Long authorId;
+
+    @Transient
+    private Author author;
 
     public Book(String title, String isbn, String publisher) {
         this.title = title;
@@ -58,7 +61,7 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", isbn='" + isbn + '\'' +
                 ", publisher='" + publisher + '\'' +
-                ", authorId=" + authorId +
+                ", author=" + author +
                 '}';
     }
 }
