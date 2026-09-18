@@ -2,6 +2,7 @@ package guru.springframework.jdbc;
 
 import guru.springframework.jdbc.dao.AuthorDao;
 import guru.springframework.jdbc.dao.AuthorDaoImpl;
+import guru.springframework.jdbc.domain.Author;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,19 @@ public class AuthorDaoIntegrationTest {
         assert author != null;
 
         log.info("Author: " + author);
+    }
+
+    @Test
+    void testSaveAuthor() {
+        var newAuthor = new Author();
+        newAuthor.setFirstName("John");
+        newAuthor.setLastName("Doe");
+
+        var savedAuthor = authorDao.saveNewAuthor(newAuthor);
+        assert savedAuthor != null;
+        assert savedAuthor.getId() != null;
+
+        log.info("Saved Author: " + savedAuthor);
     }
 
 }
