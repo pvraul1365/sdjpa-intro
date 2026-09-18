@@ -28,4 +28,12 @@ public class Author {
     private String firstName;
     private String lastName;
 
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }
