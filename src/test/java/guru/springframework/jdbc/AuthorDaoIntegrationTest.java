@@ -62,4 +62,41 @@ public class AuthorDaoIntegrationTest {
         log.info("Saved Author: " + savedAuthor);
     }
 
+    @Test
+    void testUpdateAuthor() {
+        Long authorId = 24L; // Replace with a valid author ID from your database
+        var author = authorDao.getById(authorId);
+        assert author != null;
+
+        String updatedFirstName = "UpdatedFirstName";
+        String updatedLastName = "UpdatedLastName";
+        author.setFirstName(updatedFirstName);
+        author.setLastName(updatedLastName);
+
+        var updatedAuthor = authorDao.updateAuthor(author);
+        assert updatedAuthor != null;
+        assert updatedAuthor.getFirstName().equals(updatedFirstName);
+        assert updatedAuthor.getLastName().equals(updatedLastName);
+
+        log.info("Updated Author: " + updatedAuthor);
+    }
+
+    @Test
+    void testDeleteAuthor() {
+        var newAuthor = new Author();
+        newAuthor.setFirstName("John");
+        newAuthor.setLastName("Doe");
+
+        var savedAuthor = authorDao.saveNewAuthor(newAuthor);
+        var author = authorDao.getById(savedAuthor.getId());
+        assert author != null;
+
+        authorDao.deleteAuthorById(savedAuthor.getId());
+
+        var deletedAuthor = authorDao.getById(savedAuthor.getId());
+        assert deletedAuthor == null;
+
+        log.info("Deleted Author with ID: " + savedAuthor.getId());
+    }
+
 }
