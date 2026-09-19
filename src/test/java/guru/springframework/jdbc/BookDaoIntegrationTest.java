@@ -31,6 +31,15 @@ public class BookDaoIntegrationTest {
     BookDao bookDao;
 
     @Test
+    void testFindByIsbn() {
+        String isbn = "978-1617294945"; // Replace with a valid ISBN from your database
+        var book = bookDao.findByIsbn(isbn);
+        assert book != null;
+
+        log.info("Book: {}", book);
+    }
+
+    @Test
     void testGetBook() {
         Long bookId = 1L; // Replace with a valid book ID from your database
         var book = bookDao.getById(bookId);
