@@ -3,8 +3,11 @@ package guru.springframework.jdbc.dao;
 import guru.springframework.jdbc.domain.Author;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,9 +21,29 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AuthorDaoImpl implements AuthorDao {
 
     private final EntityManagerFactory entityManagerFactory;
+
+    @Override
+    public List<Author> listAuthorByLastNameLike(final String lastName) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            Query query = entityManager.createQuery(
+                    "SELECT a FROM Author a WHERE a.lastName LIKE :last_name");
+            query.setParameter("last_name", lastName + "%");
+
+            return query.getResultList();
+        } catch (Exception e) {
+            log.error("Error listing authors by last name like '{}'", lastName, e);
+        } finally {
+            entityManager.close();
+        }
+
+        return List.of();
+    }
 
     @Override
     public Author getById(Long id) {

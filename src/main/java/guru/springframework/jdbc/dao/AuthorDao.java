@@ -1,6 +1,7 @@
 package guru.springframework.jdbc.dao;
 
 import guru.springframework.jdbc.domain.Author;
+import java.util.List;
 
 /**
  * AuthorDao
@@ -12,6 +13,8 @@ import guru.springframework.jdbc.domain.Author;
  * @since 1.25
  */
 public interface AuthorDao {
+
+    List<Author> listAuthorByLastNameLike(String lastName);
 
     Author getById(Long id);
 

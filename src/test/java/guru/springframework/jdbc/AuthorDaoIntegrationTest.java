@@ -99,4 +99,13 @@ public class AuthorDaoIntegrationTest {
         log.info("Deleted Author with ID: " + savedAuthor.getId());
     }
 
+    @Test
+    void testListAuthorByLastNameLike() {
+        String lastNamePattern = "Walls"; // Replace with a valid last name pattern from your database
+        var authors = authorDao.listAuthorByLastNameLike(lastNamePattern);
+        assert authors != null && !authors.isEmpty();
+
+        log.info("Authors with last name like '{}': {}", lastNamePattern, authors);
+    }
+
 }
