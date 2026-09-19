@@ -14,6 +14,8 @@ import java.util.List;
  */
 public interface BookDao {
 
+    Book findBookByTitleNative(String title);
+
     Book findBookByTitleCriteria(String title);
 
     List<Book> findAllBooks();
