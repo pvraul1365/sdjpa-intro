@@ -1,6 +1,7 @@
 package guru.springframework.jdbc.dao;
 
 import guru.springframework.jdbc.domain.Book;
+import java.util.List;
 
 /**
  * BookDao
@@ -12,6 +13,8 @@ import guru.springframework.jdbc.domain.Book;
  * @since 1.25
  */
 public interface BookDao {
+
+    List<Book> findAllBooks();
 
     Book findByIsbn(String isbn);
 

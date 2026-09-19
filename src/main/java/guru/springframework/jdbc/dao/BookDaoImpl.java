@@ -4,6 +4,7 @@ import guru.springframework.jdbc.domain.Book;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,12 +24,30 @@ public class BookDaoImpl implements BookDao {
     private final EntityManagerFactory entityManagerFactory;
 
     @Override
+    public List<Book> findAllBooks() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            TypedQuery<Book> query = entityManager.createNamedQuery(
+                    "book_find_all", Book.class);
+
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException("Error finding all books", e);
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    @Override
     public Book findByIsbn(final String isbn) {
         EntityManager entityManager = this.getEntityManager();
 
         try {
-            TypedQuery<Book> query = entityManager.createQuery(
-                    "SELECT b FROM Book b WHERE b.isbn = :isbn", Book.class);
+            /*TypedQuery<Book> query = entityManager.createQuery(
+                    "SELECT b FROM Book b WHERE b.isbn = :isbn", Book.class);*/
+            TypedQuery<Book> query = entityManager.createNamedQuery(
+                    "book_find_by_isbn", Book.class);
             query.setParameter("isbn", isbn);
 
             return query.getSingleResult();
@@ -48,8 +67,8 @@ public class BookDaoImpl implements BookDao {
     public Book findBookByTitle(final String title) {
         EntityManager entityManager = this.getEntityManager();
 
-        TypedQuery<Book> query = entityManager.createQuery(
-                "SELECT b FROM Book b WHERE b.title = :title", Book.class);
+        TypedQuery<Book> query = entityManager.createNamedQuery(
+                "book_find_by_title", Book.class);
         query.setParameter("title", title);
 
         return query.getSingleResult();

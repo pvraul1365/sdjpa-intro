@@ -36,11 +36,11 @@ public class AuthorDaoImpl implements AuthorDao {
             return typedQuery.getResultList();
         } catch (Exception e) {
             log.error("Error finding all authors", e);
+            throw new RuntimeException("Error finding all authors", e);
         } finally {
             entityManager.close();
         }
 
-        return List.of();
     }
 
     @Override
@@ -56,11 +56,11 @@ public class AuthorDaoImpl implements AuthorDao {
             return query.getResultList();
         } catch (Exception e) {
             log.error("Error listing authors by last name like '{}'", lastName, e);
+            throw new RuntimeException("Error listing authors by last name like: " + lastName, e);
         } finally {
             entityManager.close();
         }
 
-        return List.of();
     }
 
     @Override
