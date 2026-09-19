@@ -36,7 +36,7 @@ public class AuthorDaoIntegrationTest {
         var author = authorDao.getById(authorId);
         assert author != null;
 
-        log.info("Author: " + author);
+        log.info("Author: {}", author);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class AuthorDaoIntegrationTest {
         var author = authorDao.findAuthorByName(firstName, lastName);
         assert author != null;
 
-        log.info("Author: " + author);
+        log.info("Author: {}", author);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class AuthorDaoIntegrationTest {
         assert savedAuthor != null;
         assert savedAuthor.getId() != null;
 
-        log.info("Saved Author: " + savedAuthor);
+        log.info("Saved Author: {}", savedAuthor);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class AuthorDaoIntegrationTest {
         assert updatedAuthor.getFirstName().equals(updatedFirstName);
         assert updatedAuthor.getLastName().equals(updatedLastName);
 
-        log.info("Updated Author: " + updatedAuthor);
+        log.info("Updated Author: {}", updatedAuthor);
     }
 
     @Test
