@@ -14,6 +14,8 @@ import java.util.List;
  */
 public interface AuthorDao {
 
+    List<Author> findAllAuthors();
+
     List<Author> listAuthorByLastNameLike(String lastName);
 
     Author getById(Long id);

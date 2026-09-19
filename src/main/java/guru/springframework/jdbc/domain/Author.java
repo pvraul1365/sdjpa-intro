@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ import lombok.Setter;
  * @since 1.25
  */
 @Entity
+@NamedQuery(name = "author_find_all", query = "SELECT a FROM Author a")
 @Getter
 @Setter
 public class Author {

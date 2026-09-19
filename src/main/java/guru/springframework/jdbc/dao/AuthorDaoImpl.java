@@ -27,6 +27,23 @@ public class AuthorDaoImpl implements AuthorDao {
     private final EntityManagerFactory entityManagerFactory;
 
     @Override
+    public List<Author> findAllAuthors() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            TypedQuery<Author> typedQuery = entityManager.createNamedQuery("author_find_all", Author.class);
+
+            return typedQuery.getResultList();
+        } catch (Exception e) {
+            log.error("Error finding all authors", e);
+        } finally {
+            entityManager.close();
+        }
+
+        return List.of();
+    }
+
+    @Override
     public List<Author> listAuthorByLastNameLike(final String lastName) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 

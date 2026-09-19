@@ -96,7 +96,7 @@ public class AuthorDaoIntegrationTest {
         var deletedAuthor = authorDao.getById(savedAuthor.getId());
         assert deletedAuthor == null;
 
-        log.info("Deleted Author with ID: " + savedAuthor.getId());
+        log.info("Deleted Author with ID: {}", savedAuthor.getId());
     }
 
     @Test
@@ -106,6 +106,14 @@ public class AuthorDaoIntegrationTest {
         assert authors != null && !authors.isEmpty();
 
         log.info("Authors with last name like '{}': {}", lastNamePattern, authors);
+    }
+
+    @Test
+    void testFindAllAuthors() {
+        var authors = authorDao.findAllAuthors();
+        assert authors != null && !authors.isEmpty();
+
+        log.info("All Authors: {}", authors);
     }
 
 }
