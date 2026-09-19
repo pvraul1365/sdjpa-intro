@@ -2,6 +2,7 @@ package guru.springframework.jdbc;
 
 import guru.springframework.jdbc.dao.AuthorDao;
 import guru.springframework.jdbc.dao.AuthorDaoImpl;
+import guru.springframework.jdbc.domain.Author;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,65 @@ public class AuthorDaoIntegrationTest {
         var author = authorDao.getById(authorId);
         assert author != null;
 
-        log.info("Author: " + author);
+        log.info("Author: {}", author);
+    }
+
+    @Test
+    void testFindAuthorByName() {
+        String firstName = "Craig"; // Replace with a valid first name from your database
+        String lastName = "Walls"; // Replace with a valid last name from your database
+        var author = authorDao.findAuthorByName(firstName, lastName);
+        assert author != null;
+
+        log.info("Author: {}", author);
+    }
+
+    @Test
+    void testSaveNewAuthor() {
+        var newAuthor = new Author();
+        newAuthor.setFirstName("Marta");
+        newAuthor.setLastName("Mazo");
+
+        var savedAuthor = authorDao.saveNewAuthor(newAuthor);
+        assert savedAuthor != null;
+
+        log.info("Saved Author: {}", savedAuthor);
+    }
+
+    @Test
+    void testUpdateAuthor() {
+        var newAuthor = new Author();
+        newAuthor.setFirstName("Marta");
+        newAuthor.setLastName("Mazo");
+
+        var savedAuthor = authorDao.saveNewAuthor(newAuthor);
+
+        savedAuthor.setFirstName("UpdatedFirstName");
+        savedAuthor.setLastName("UpdatedLastName");
+
+        var updatedAuthor = authorDao.updateAuthor(savedAuthor);
+        assert updatedAuthor != null;
+        assert updatedAuthor.getFirstName().equals("UpdatedFirstName");
+        assert updatedAuthor.getLastName().equals("UpdatedLastName");
+
+        log.info("Updated Author: {}", updatedAuthor);
+    }
+
+    @Test
+    void testDeleteAuthor() {
+        var newAuthor = new Author();
+        newAuthor.setFirstName("Marta");
+        newAuthor.setLastName("Mazo");
+
+        var savedAuthor = authorDao.saveNewAuthor(newAuthor);
+        Long authorId = savedAuthor.getId();
+
+        authorDao.deleteAuthorById(authorId);
+
+        var deletedAuthor = authorDao.getById(authorId);
+        assert deletedAuthor == null;
+
+        log.info("Deleted Author with ID: {}", authorId);
     }
 
 }

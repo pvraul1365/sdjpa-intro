@@ -1,6 +1,7 @@
 package guru.springframework.jdbc.repository;
 
 import guru.springframework.jdbc.domain.Author;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,4 +14,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 1.25
  */
 public interface AuthorRepository extends JpaRepository<Author, Long> {
+
+    Optional<Author> findByFirstNameAndLastName(String firstName, String lastName);
+
 }
