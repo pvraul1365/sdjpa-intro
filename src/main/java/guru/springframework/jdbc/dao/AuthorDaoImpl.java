@@ -5,6 +5,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.ParameterExpression;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +30,37 @@ import org.springframework.stereotype.Component;
 public class AuthorDaoImpl implements AuthorDao {
 
     private final EntityManagerFactory entityManagerFactory;
+
+    @Override
+    public Author findAuthorByNameCriteria(final String firstName, final String lastName) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Author> criteriaQuery = criteriaBuilder.createQuery(Author.class);
+
+            Root<Author> authorRoot = criteriaQuery.from(Author.class);
+            ParameterExpression<String> firstNameParameter = criteriaBuilder.parameter(String.class);
+            ParameterExpression<String> lastNameParameter = criteriaBuilder.parameter(String.class);
+
+            Predicate firstNamePredicate = criteriaBuilder.equal(authorRoot.get("firstName"), firstNameParameter);
+            Predicate lastNamePredicate = criteriaBuilder.equal(authorRoot.get("lastName"), lastNameParameter);
+            criteriaQuery.select(authorRoot).where(criteriaBuilder.and(firstNamePredicate, lastNamePredicate));
+
+            TypedQuery<Author> query = entityManager.createQuery(criteriaQuery);
+            query.setParameter(firstNameParameter, firstName);
+            query.setParameter(lastNameParameter, lastName);
+
+            return query.getSingleResult();
+
+        } catch (Exception e) {
+            log.error("Error finding author by name criteria: {} {}", firstName, lastName, e);
+            throw new RuntimeException("Error finding author by name criteria: " + firstName + " " + lastName, e);
+        } finally {
+            entityManager.close();
+        }
+
+    }
 
     @Override
     public List<Author> findAllAuthors() {
