@@ -14,6 +14,8 @@ import java.util.List;
  */
 public interface BookDao {
 
+    Book findBookByTitleCriteria(String title);
+
     List<Book> findAllBooks();
 
     Book findByIsbn(String isbn);

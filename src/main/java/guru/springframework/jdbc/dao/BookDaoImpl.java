@@ -4,8 +4,14 @@ import guru.springframework.jdbc.domain.Book;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.ParameterExpression;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,9 +25,36 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class BookDaoImpl implements BookDao {
 
     private final EntityManagerFactory entityManagerFactory;
+
+    @Override
+    public Book findBookByTitleCriteria(final String title) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Book> criteriaQuery = criteriaBuilder.createQuery(Book.class);
+
+            Root<Book> bookRoot = criteriaQuery.from(Book.class);
+            ParameterExpression<String> titleParameter = criteriaBuilder.parameter(String.class);
+            Predicate titlePredicate = criteriaBuilder.equal(bookRoot.get("title"), titleParameter);
+            criteriaQuery.select(bookRoot).where(titlePredicate);
+
+            TypedQuery<Book> query = entityManager.createQuery(criteriaQuery);
+            query.setParameter(titleParameter, title);
+
+            return query.getSingleResult();
+        } catch (Exception e) {
+            log.error("Error finding book by title: {}", title, e);
+            throw new RuntimeException("Error finding book by title: " + title, e);
+        } finally {
+            entityManager.close();
+        }
+
+    }
 
     @Override
     public List<Book> findAllBooks() {

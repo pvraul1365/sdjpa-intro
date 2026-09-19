@@ -31,6 +31,15 @@ public class BookDaoIntegrationTest {
     BookDao bookDao;
 
     @Test
+    void testFindBookByTitleCriteria() {
+        String title = "Spring in Action, 5th Edition"; // Replace with a valid title from your database
+        var book = bookDao.findBookByTitleCriteria(title);
+        assert book != null;
+
+        log.info("Book: {}", book);
+    }
+
+    @Test
     void testFindAllBooks() {
         var book = bookDao.findAllBooks();
         assert book != null;
