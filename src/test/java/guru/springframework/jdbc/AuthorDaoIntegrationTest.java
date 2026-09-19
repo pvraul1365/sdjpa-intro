@@ -31,6 +31,16 @@ public class AuthorDaoIntegrationTest {
     AuthorDao authorDao;
 
     @Test
+    void testfindAuthorByNameNative() {
+        String firstName = "Craig"; // Replace with a valid first name from your database
+        String lastName = "Walls"; // Replace with a valid last name from your database
+        var author = authorDao.findAuthorByNameNative(firstName, lastName);
+        assert author != null;
+
+        log.info("Author: {}", author);
+    }
+
+    @Test
     void testAuthorByCriteria() {
         String firstName = "Craig"; // Replace with a valid first name from your database
         String lastName = "Walls"; // Replace with a valid last name from your database
