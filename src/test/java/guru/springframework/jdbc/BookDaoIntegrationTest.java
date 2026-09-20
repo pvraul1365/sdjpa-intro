@@ -14,6 +14,7 @@ import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabas
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,6 +40,18 @@ public class BookDaoIntegrationTest {
 
     @Autowired
     BookDao bookDao;
+
+    @Test
+    void testFindAllBooksSortByTitleDesc() {
+        int pageSize = 5;
+        int offset = 0; // Page 1
+        var books = bookDao.findAllBooksSortByTitle(PageRequest.of(offset, pageSize,
+                Sort.by("title").descending()));
+        assert books != null;
+        assert books.size() == pageSize;
+
+        log.info("Books (Pageable Title DESC): {}", books);
+    }
 
     @Test
     void testFindAllBooksPageable() {
