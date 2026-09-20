@@ -13,6 +13,7 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,6 +39,17 @@ public class BookDaoIntegrationTest {
 
     @Autowired
     BookDao bookDao;
+
+    @Test
+    void testFindAllBooksPageable() {
+        int pageSize = 5;
+        int offset = 0; // Page 1
+        var books = bookDao.findAllBooks(PageRequest.of(offset, pageSize));
+        assert books != null;
+        assert books.size() == pageSize;
+
+        log.info("Books (Pageable): {}", books);
+    }
 
     @Test
     void testFindAllBooksPage1() {

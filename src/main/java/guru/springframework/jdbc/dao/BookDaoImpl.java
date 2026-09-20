@@ -4,6 +4,8 @@ import guru.springframework.jdbc.domain.Author;
 import guru.springframework.jdbc.domain.Book;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,12 @@ import org.springframework.stereotype.Component;
 public class BookDaoImpl implements BookDao {
 
     private final JdbcTemplate jdbcTemplate;
+
+    @Override
+    public List<Book> findAllBooks(final Pageable pageable) {
+        return jdbcTemplate.query("SELECT * FROM book ORDER BY id ASC LIMIT ? OFFSET ?",
+                new BookMapper(), pageable.getPageSize(), pageable.getOffset());
+    }
 
     @Override
     public List<Book> findAllBooks(final int pageSize, final int offset) {
