@@ -3,6 +3,7 @@ package guru.springframework.jdbc.repository;
 import guru.springframework.jdbc.domain.Book;
 import jakarta.annotation.Nullable;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -22,4 +23,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Nullable
     Book getByTitle(@Nullable String title);
+
+    Stream<Book> findAllByTitleNotNull();
 }

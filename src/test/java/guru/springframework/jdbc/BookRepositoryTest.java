@@ -2,6 +2,8 @@ package guru.springframework.jdbc;
 
 import guru.springframework.jdbc.domain.Book;
 import guru.springframework.jdbc.repository.BookRepository;
+import java.util.concurrent.atomic.AtomicInteger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
@@ -9,6 +11,7 @@ import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabas
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -23,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ActiveProfiles("local")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Slf4j
 public class BookRepositoryTest {
 
     @Autowired
@@ -34,6 +38,18 @@ public class BookRepositoryTest {
         assertThrows(EmptyResultDataAccessException.class, () -> {
             Book book = bookRepository.readByTitle("foobar4");
         });
+    }
+
+    @Test
+    void testBookStream() {
+        AtomicInteger count = new AtomicInteger();
+        bookRepository.findAllByTitleNotNull().forEach(book -> {
+            log.info("Book: {}", book);
+            count.incrementAndGet();
+        });
+
+        log.info("Total books: {}", count.get());
+        assertThat(count.get()).isGreaterThan(10);
     }
     
 }
