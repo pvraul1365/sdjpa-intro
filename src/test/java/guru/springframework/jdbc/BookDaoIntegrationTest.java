@@ -40,6 +40,15 @@ public class BookDaoIntegrationTest {
     BookDao bookDao;
 
     @Test
+    void testFindAllBooks() {
+        var books = bookDao.findAllBooks();
+        assert books != null;
+        assert books.size() > 10;
+
+        log.info("Books: {}", books);
+    }
+
+    @Test
     void testGetBook() {
         Long bookId = 1L; // Replace with a valid book ID from your database
         var book = bookDao.getById(bookId);

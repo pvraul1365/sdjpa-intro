@@ -2,6 +2,7 @@ package guru.springframework.jdbc.dao;
 
 import guru.springframework.jdbc.domain.Author;
 import guru.springframework.jdbc.domain.Book;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,6 +22,11 @@ import org.springframework.stereotype.Component;
 public class BookDaoImpl implements BookDao {
 
     private final JdbcTemplate jdbcTemplate;
+
+    @Override
+    public List<Book> findAllBooks() {
+        return jdbcTemplate.query("SELECT * FROM book ORDER BY id ASC", new BookMapper());
+    }
 
     @Override
     public Book getById(final Long id) {
