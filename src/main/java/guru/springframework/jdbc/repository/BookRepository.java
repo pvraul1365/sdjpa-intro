@@ -3,8 +3,10 @@ package guru.springframework.jdbc.repository;
 import guru.springframework.jdbc.domain.Book;
 import jakarta.annotation.Nullable;
 import java.util.Optional;
+import java.util.concurrent.Future;
 import java.util.stream.Stream;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * BookRepository
@@ -25,4 +27,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Book getByTitle(@Nullable String title);
 
     Stream<Book> findAllByTitleNotNull();
+
+    @Async
+    Future<Book> queryByTitle(String title);
 }

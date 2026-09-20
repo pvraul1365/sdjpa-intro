@@ -2,6 +2,7 @@ package guru.springframework.jdbc;
 
 import guru.springframework.jdbc.domain.Book;
 import guru.springframework.jdbc.repository.BookRepository;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -51,5 +53,15 @@ public class BookRepositoryTest {
         log.info("Total books: {}", count.get());
         assertThat(count.get()).isGreaterThan(10);
     }
-    
+
+    @Test
+    void testBookFuture() throws Exception {
+        Future<Book> bookFuture = bookRepository.queryByTitle("Clean Code");
+
+        Book book = bookFuture.get();
+        log.info("Book from Future: {}", book);
+
+        assertNotNull(book);
+        assertThat(book.getTitle()).isEqualTo("Clean Code");
+    }
 }
