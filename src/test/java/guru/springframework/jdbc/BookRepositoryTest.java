@@ -35,6 +35,15 @@ public class BookRepositoryTest {
     BookRepository bookRepository;
 
     @Test
+    void testBookQuery() {
+        Book book = bookRepository.findBookByTitleWithQuery("Clean Code");
+        log.info("Book: {}", book);
+
+        assertNotNull(book);
+        assertThat(book.getTitle()).isEqualTo("Clean Code");
+    }
+
+    @Test
     void testEmptyResultException() {
 
         assertThrows(EmptyResultDataAccessException.class, () -> {
