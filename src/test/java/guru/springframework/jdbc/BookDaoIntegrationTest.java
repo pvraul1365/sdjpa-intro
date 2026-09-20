@@ -40,6 +40,28 @@ public class BookDaoIntegrationTest {
     BookDao bookDao;
 
     @Test
+    void testFindAllBooksPage1() {
+        int pageSize = 5;
+        int offset = 0; // Page 1
+        var books = bookDao.findAllBooks(pageSize, offset);
+        assert books != null;
+        assert books.size() == pageSize;
+
+        log.info("Books (Page 1): {}", books);
+    }
+
+    @Test
+    void testFindAllBooksPage2() {
+        int pageSize = 5;
+        int offset = 5; // Page 2
+        var books = bookDao.findAllBooks(pageSize, offset);
+        assert books != null;
+        assert books.size() == pageSize;
+
+        log.info("Books (Page 2): {}", books);
+    }
+
+    @Test
     void testFindAllBooks() {
         var books = bookDao.findAllBooks();
         assert books != null;

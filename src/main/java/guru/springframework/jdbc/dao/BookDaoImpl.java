@@ -24,6 +24,12 @@ public class BookDaoImpl implements BookDao {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
+    public List<Book> findAllBooks(final int pageSize, final int offset) {
+        return jdbcTemplate.query("SELECT * FROM book ORDER BY id ASC LIMIT ? OFFSET ?",
+                new BookMapper(), pageSize, offset);
+    }
+
+    @Override
     public List<Book> findAllBooks() {
         return jdbcTemplate.query("SELECT * FROM book ORDER BY id ASC", new BookMapper());
     }
