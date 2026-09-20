@@ -10,6 +10,8 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,6 +34,18 @@ public class AuthorDaoIntegrationTest {
 
     @Autowired
     AuthorDao authorDao;
+
+    @Test
+    void testfindAllAuthorsByLastNameOrderByFirstNameDesc() {
+        int pageSize = 5;
+        int offset = 0; // Page 1
+        var authors = authorDao.findAllAuthorsByLastNameOrderByFirstName("Doe",
+                PageRequest.of(offset, pageSize, Sort.by("firstName").descending()));
+
+        assert authors != null;
+
+        log.info("Authors (Pageable Sort By First Name DESC): {}", authors);
+    }
 
     @Test
     void testGetAuthor() {

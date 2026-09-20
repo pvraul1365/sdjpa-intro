@@ -3,8 +3,10 @@ package guru.springframework.jdbc.dao;
 import guru.springframework.jdbc.domain.Author;
 import guru.springframework.jdbc.domain.Book;
 import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,17 @@ import org.springframework.stereotype.Component;
 public class AuthorDaoImpl implements AuthorDao {
 
     private final JdbcTemplate jdbcTemplate;
+
+    @Override
+    public List<Author> findAllAuthorsByLastNameOrderByFirstName(final String lastName, final Pageable pageable) {
+        String sql = "select * from author where last_name = ? order by first_name "
+                + pageable.getSort().getOrderFor("firstName").getDirection().name()
+                + " limit ? offset ?";
+
+        return jdbcTemplate.query(sql,
+                new Object[]{lastName, pageable.getPageSize(), pageable.getOffset()}
+                , getRowMapper());
+    }
 
     @Override
     public Author getById(final Long id) {
