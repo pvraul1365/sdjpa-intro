@@ -35,6 +35,15 @@ public class BookRepositoryTest {
     BookRepository bookRepository;
 
     @Test
+    void testfindBookByTitleNativeQuery() {
+        Book book = bookRepository.findBookByTitleNativeQuery("Clean Code");
+        log.info("Book: {}", book);
+
+        assertNotNull(book);
+        assertThat(book.getTitle()).isEqualTo("Clean Code");
+    }
+
+    @Test
     void testBookJPANamedQuery() {
         Book book = bookRepository.jpaNamed("Clean Code");
         log.info("Book: {}", book);
