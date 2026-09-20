@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import lombok.Setter;
  * @since 1.25
  */
 @Entity
+@NamedQuery(name = "Book.findBookByTitleWithQueryNamed", query = "FROM Book b WHERE b.title = :title")
 @Getter
 @Setter
 @NoArgsConstructor
