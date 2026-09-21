@@ -13,6 +13,7 @@ import jakarta.persistence.criteria.Root;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,6 +31,32 @@ import org.springframework.stereotype.Component;
 public class BookDaoImpl implements BookDao {
 
     private final EntityManagerFactory entityManagerFactory;
+
+    @Override
+    public List<Book> findAllBooksSortByTitle(final Pageable pageable) {
+        return List.of();
+    }
+
+    @Override
+    public List<Book> findAllBooks(final Pageable pageable) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            TypedQuery<Book> query = entityManager.createQuery("SELECT b FROM Book b", Book.class);
+            query.setFirstResult(Math.toIntExact(pageable.getOffset()));
+            query.setMaxResults(pageable.getPageSize());
+
+            return query.getResultList();
+        } finally {
+            entityManager.close();
+        }
+
+    }
+
+    @Override
+    public List<Book> findAllBooks(final int pageSize, final int offset) {
+        return List.of();
+    }
 
     @Override
     public Book findBookByTitleNative(final String title) {
