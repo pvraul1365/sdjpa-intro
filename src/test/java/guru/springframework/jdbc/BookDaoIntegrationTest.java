@@ -10,6 +10,7 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
 /**
@@ -30,6 +31,16 @@ public class BookDaoIntegrationTest {
 
     @Autowired
     BookDao bookDao;
+
+    @Test
+    void findAllBooksSortByTitle() {
+        var books = bookDao.findAllBooksSortByTitle(PageRequest.of(0, 10,
+                Sort.by("title").descending()));
+        assert books != null;
+        assert books.size() == 10;
+
+        log.info("Books: {}", books);
+    }
 
     @Test
     void findAllBooks() {

@@ -34,7 +34,21 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> findAllBooksSortByTitle(final Pageable pageable) {
-        return List.of();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            String hql = "SELECT b FROM Book b ORDER BY b.title " + pageable.getSort()
+                    .getOrderFor("title").getDirection().name();
+
+            TypedQuery<Book> query = entityManager.createQuery(hql, Book.class);
+            query.setFirstResult(Math.toIntExact(pageable.getOffset()));
+            query.setMaxResults(pageable.getPageSize());
+
+            return query.getResultList();
+        } finally {
+            entityManager.close();
+        }
+
     }
 
     @Override
