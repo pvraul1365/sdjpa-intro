@@ -3,8 +3,12 @@ package guru.springframework.jdbc.dao;
 import guru.springframework.jdbc.domain.Book;
 import guru.springframework.jdbc.repository.BookRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,6 +26,28 @@ import org.springframework.stereotype.Component;
 public class BookDaoImpl implements BookDao {
 
     private final BookRepository bookRepository;
+
+    @Override
+    public List<Book> findAllBooksSortedByTitle(final Pageable pageable) {
+        Page<Book> bookPage = bookRepository.findAll(pageable);
+
+        return bookPage.getContent();
+    }
+
+    @Override
+    public List<Book> findAllBooks(final Pageable pageable) {
+        Page<Book> bookPage = bookRepository.findAll(pageable);
+
+        return bookPage.getContent();
+    }
+
+    @Override
+    public List<Book> findAllBooks(final int page, final int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Book> bookPage = bookRepository.findAll(pageable);
+
+        return bookPage.getContent();
+    }
 
     @Override
     public Book getById(final Long id) {

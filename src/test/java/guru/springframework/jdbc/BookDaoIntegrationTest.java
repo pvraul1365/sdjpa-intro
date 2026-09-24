@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -29,6 +32,36 @@ public class BookDaoIntegrationTest {
 
     @Autowired
     BookDaoImpl bookDao;
+
+    @Test
+    void testFindAllBooksSortedByTitle() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("title").descending());
+        var books = bookDao.findAllBooksSortedByTitle(pageable);
+
+        assert books != null;
+        assert books.size() == 10;
+
+        log.info("Books: {}", books);
+    }
+
+    @Test
+    void testFindAllBooksPageable() {
+        Pageable pageable = PageRequest.of(0, 10);
+        var books = bookDao.findAllBooks(pageable);
+        assert books != null;
+        assert books.size() == 10;
+
+        log.info("Books: {}", books);
+    }
+
+    @Test
+    void testFindAllBooks() {
+        var books = bookDao.findAllBooks(0, 10);
+        assert books != null;
+        assert books.size() == 10;
+
+        log.info("Books: {}", books);
+    }
 
     @Test
     void testGetBook() {
